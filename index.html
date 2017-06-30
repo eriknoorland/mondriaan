@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mondriaan</title>
+    <style type="text/css">
+      .controls {
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" width="400" height="400"></canvas>
+    <div class="controls">
+      <input id="filledSquareProbabilityRange" type="range" min="0" max="100" value="15">
+      <label>filled squares probability</label>
+      <br><br>
+      <input id="fillSquares" type="checkbox" checked="checked"><label for="fillSquares">fill squares</label>
+      <br><br>
+      <select id="fillColour">
+        <option>colour</option>
+        <option value="#E4F7F7">light blue</option>
+        <option value="#BF0000">red</option>
+        <option value="#FFF700">yellow</option>
+        <option value="#0500EF">blue</option>
+        <option value="#000000">black</option>
+      </select>
+      <br><br>
+      <button id="regenerateButton">generate</button>
+    </div>
+    <script type="text/javascript" src="app.js"></script>
+  </body>
+</html>
