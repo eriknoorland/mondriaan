@@ -42,6 +42,7 @@
 
     setFilledSquareProbability(filledSquareProbabilityRange.value);
     doFillSquares = fillSquaresCheckbox.checked;
+    fillColour = colourSelect.options[colourSelect.selectedIndex].value;
 
     generate();
   }
