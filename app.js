@@ -1,63 +1,59 @@
 (function(window, document) {
   'use strict';
 
+  const regenerateButton = document.getElementById('regenerateButton');
+  const filledSquareProbabilityRange = document.getElementById('filledSquareProbabilityRange');
+  const fillSquaresCheckbox = document.getElementById('fillSquares');
+  const colourSelect = document.getElementById('fillColour');
   const canvas = document.getElementById('canvas');
   const context = canvas.getContext('2d');
+
   const minNumStrokes = 1;
   const maxNumStrokes = 5;
   const minStrokeWidth = 1;
   const maxStrokeWidth = 5;
   const strokeColour = '#000000';
-  const fillColours = [
-    '#E4F7F7',
-    '#BF0000',
-    '#FFF700',
-    '#0500EF',
-    '#000000'
-  ];
+  const fillColours = ['#E4F7F7', '#BF0000', '#FFF700', '#0500EF', '#000000'];
+  const state = { rectangles: [], strokes: [] };
 
   let filledSquareProbability;
   let doFillSquares;
   let fillColour;
 
-  let state = {
-    rectangles: [],
-    strokes: []
-  };
-
   /**
    * Init
    */
   function init() {
-    let regenerateButton = document.getElementById('regenerateButton');
-    let filledSquareProbabilityRange = document.getElementById('filledSquareProbabilityRange');
-    let fillSquaresCheckbox = document.getElementById('fillSquares');
-    let colourSelect = document.getElementById('fillColour');
-
-    regenerateButton.addEventListener('click', generate);
-    filledSquareProbabilityRange.addEventListener('change', onFilledSquareProbabilityRangeChange);
-    fillSquaresCheckbox.addEventListener('change', onFillSquaresCheckboxChange);
-    colourSelect.addEventListener('change', onColourChange);
-    canvas.addEventListener('click', onCanvasClick);
-
     setFilledSquareProbability(filledSquareProbabilityRange.value);
     doFillSquares = fillSquaresCheckbox.checked;
     fillColour = colourSelect.options[colourSelect.selectedIndex].value;
 
     generate();
+    bindEvents();
+  }
+
+  /**
+   * Bind handlers to events
+   */
+  function bindEvents() {
+    regenerateButton.addEventListener('click', generate);
+    filledSquareProbabilityRange.addEventListener('change', onFilledSquareProbabilityRangeChange);
+    fillSquaresCheckbox.addEventListener('change', onFillSquaresCheckboxChange);
+    colourSelect.addEventListener('change', onColourChange);
+    canvas.addEventListener('click', onCanvasClick);
   }
 
   /**
    * Generates a new painting
    */
   function generate() {
+    const numRows = getRandomRange(minNumStrokes, maxNumStrokes);
+    const numCols = getRandomRange(minNumStrokes, maxNumStrokes);
+
     let rows = [];
     let cols = [];
     let rectangles = [];
     let strokes = [];
-
-    let numRows = Math.round(getRandomRange(minNumStrokes, maxNumStrokes));
-    let numCols = Math.round(getRandomRange(minNumStrokes, maxNumStrokes));
 
     // horizontal strokes
     for(let i = 0; i < numRows; i++) {
@@ -65,7 +61,7 @@
         x: 0,
         y: Math.round(Math.random() * canvas.height),
         width: canvas.width,
-        height: Math.round(getRandomRange(minStrokeWidth, maxStrokeWidth)),
+        height: getRandomRange(minStrokeWidth, maxStrokeWidth),
         colour: strokeColour
       });
     }
@@ -75,7 +71,7 @@
       cols.push({
         x: Math.round(Math.random() * canvas.width),
         y: 0,
-        width: Math.round(getRandomRange(minStrokeWidth, maxStrokeWidth)),
+        width: getRandomRange(minStrokeWidth, maxStrokeWidth),
         height: canvas.height,
         colour: strokeColour
       });
@@ -83,19 +79,18 @@
 
     rows = rows.sort((a, b) => a.y - b.y);
     cols = cols.sort((a, b) => a.x - b.x);
-
     strokes = rows.concat(cols);
 
     for(let i = 0; i < numRows + 1; i++) {
-      let y = (i === 0 ? 0 : rows[i-1].y);
-      let height = (i === numRows ? canvas.width : rows[i].y) - y;
+      const y = (i ? rows[i - 1].y : 0);
+      const height = (i === numRows ? canvas.width : rows[i].y) - y;
 
       for(let j = 0; j < numCols + 1; j++) {
-        let x = (j === 0 ? 0 : cols[j-1].x);
-        let width = (j === numCols ? canvas.height : cols[j].x) - x;
+        const x = (j ? cols[j - 1].x : 0);
+        const width = (j === numCols ? canvas.height : cols[j].x) - x;
+        const isWhite = !doFillSquares || (Math.random() > filledSquareProbability);
+        const colour = isWhite ? '#FFFFFF' : fillColours[getRandomRange(0, fillColours.length)];
 
-        let doColourWhite = !doFillSquares || (Math.random() > filledSquareProbability);
-        let colour = doColourWhite ? '#FFFFFF' : fillColours[Math.round(getRandomRange(0, fillColours.length))];
         rectangles.push({x, y, width, height, colour});
       }
     }
@@ -111,17 +106,14 @@
    * @param {Object} state
    */
   function drawPainting(state) {
-    let {strokes, rectangles} = state;
-    let objects = rectangles.concat(strokes);
+    const {strokes, rectangles} = state;
+    const objects = rectangles.concat(strokes);
 
-    // start with a fresh canvas
     context.clearRect(0, 0, canvas.width, canvas.height);
-
-    // draw objects
-    for(let k = 0; k < objects.length; k++) {
-      let {x, y, width, height, colour} = objects[k];
-      drawRectangle(context, x, y, width, height, colour);
-    }
+    objects.forEach(({ x, y, width, height, colour }) => {
+      context.fillStyle = colour;
+      context.fillRect(x, y, width, height);
+    });
   }
 
   /**
@@ -144,45 +136,30 @@
    * Handles the "fill colour" change event
    * @param {Event} event
    */
-  function onColourChange(event) {
-    let target = event.currentTarget;
-    fillColour = target.options[target.selectedIndex].value;
+  function onColourChange({ currentTarget }) {
+    fillColour = currentTarget.options[currentTarget.selectedIndex].value;
   }
 
   /**
    * Handles the canvas click event
    * @param {Event} event
    */
-  function onCanvasClick(event) {
-    let rectangles = state.rectangles.slice(0);
+  function onCanvasClick({ offsetX, offsetY}) {
+    const rectangles = state.rectangles.slice(0);
 
-    for(let i = 0; i < rectangles.length; i++) {
-      let {x, y, width, height, colour} = rectangles[i];
+    rectangles.forEach((rectangle) => {
+      const {x, y, width, height, colour} = rectangle;
 
-      if(event.offsetX > x && event.offsetX < x + width) {
-        if(event.offsetY > y && event.offsetY < y + height) {
-          rectangles[i].colour = fillColour;
+      if(offsetX > x && offsetX < x + width) {
+        if(offsetY > y && offsetY < y + height) {
+          rectangle.colour = fillColour;
         }
       }
-    }
+    });
 
     state.rectangles = rectangles;
 
     drawPainting(state);
-  }
-
-  /**
-   * Draws a rectangle on the given context
-   * @param {int} context
-   * @param {Number} x
-   * @param {Number} y
-   * @param {Number} width
-   * @param {Number} height
-   * @param {String} colour
-   */
-  function drawRectangle(context, x, y, width, height, colour) {
-    context.fillStyle = colour;
-    context.fillRect(x, y, width, height);
   }
 
   /**
@@ -200,7 +177,7 @@
    * @return {Number}
    */
   function getRandomRange(min, max) {
-    return (Math.random() * (max - min)) + min;
+    return Math.round((Math.random() * (max - min)) + min);
   }
 
   init();
