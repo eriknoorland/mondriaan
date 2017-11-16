@@ -12,13 +12,12 @@
   const maxNumStrokes = 5;
   const minStrokeWidth = 1;
   const maxStrokeWidth = 5;
-  const strokeColour = '#000000';
-  const fillColours = [
-    { name: 'Light Blue', hex: '#E4F7F7' },
-    { name: 'Red', hex: '#BF0000' },
-    { name: 'Yellow', hex: '#FFF700' },
-    { name: 'Blue', hex: '#0500EF' },
-    { name: 'Black', hex: '#000000' },
+  const colours = [
+    { name: 'Light Blue', value: '#E4F7F7' },
+    { name: 'Red', value: '#BF0000' },
+    { name: 'Yellow', value: '#FFF700' },
+    { name: 'Blue', value: '#0500EF' },
+    { name: 'Black', value: '#000000' },
   ];
 
   const state = { rectangles: [], strokes: [] };
@@ -34,10 +33,7 @@
     setFilledSquareProbability(filledSquareProbabilityRange.value);
     doFillSquares = fillSquaresCheckbox.checked;
     fillColour = colourSelect.options[colourSelect.selectedIndex].value;
-
-    colourSelect.innerHTML += fillColours.reduce((acc, colour) => {
-      return `${acc}${renderColourOption(colour)}`;
-    }, '');
+    colourSelect.innerHTML += colours.reduce((acc, colour) => `${acc}${renderOption(colour)}`, '');
 
     generate();
     bindEvents();
@@ -73,7 +69,7 @@
         y: Math.round(Math.random() * canvas.height),
         width: canvas.width,
         height: getRandomRange(minStrokeWidth, maxStrokeWidth),
-        colour: strokeColour
+        colour: '#000000'
       });
     }
 
@@ -84,7 +80,7 @@
         y: 0,
         width: getRandomRange(minStrokeWidth, maxStrokeWidth),
         height: canvas.height,
-        colour: strokeColour
+        colour: '#000000'
       });
     }
 
@@ -100,7 +96,7 @@
         const x = (j ? cols[j - 1].x : 0);
         const width = (j === numCols ? canvas.height : cols[j].x) - x;
         const isWhite = !doFillSquares || (Math.random() > filledSquareProbability);
-        const colour = isWhite ? '#FFFFFF' : fillColours[getRandomRange(0, fillColours.length - 1)].hex;
+        const colour = isWhite ? '#FFFFFF' : colours[getRandomRange(0, colours.length - 1)].value;
 
         rectangles.push({x, y, width, height, colour});
       }
@@ -184,11 +180,11 @@
 
   /**
    * Returns a rendered option
-   * @param {Object} colour
+   * @param {Object} option
    * @return {String}
    */
-  function renderColourOption(colour) {
-    return `<option value="${colour.hex}">${colour.name}</option>`;
+  function renderOption(option) {
+    return `<option value="${option.value}">${option.name}</option>`;
   }
 
   /**
