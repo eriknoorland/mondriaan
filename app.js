@@ -13,7 +13,14 @@
   const minStrokeWidth = 1;
   const maxStrokeWidth = 5;
   const strokeColour = '#000000';
-  const fillColours = ['#E4F7F7', '#BF0000', '#FFF700', '#0500EF', '#000000'];
+  const fillColours = [
+    { name: 'Light Blue', hex: '#E4F7F7' },
+    { name: 'Red', hex: '#BF0000' },
+    { name: 'Yellow', hex: '#FFF700' },
+    { name: 'Blue', hex: '#0500EF' },
+    { name: 'Black', hex: '#000000' },
+  ];
+
   const state = { rectangles: [], strokes: [] };
 
   let filledSquareProbability;
@@ -27,6 +34,10 @@
     setFilledSquareProbability(filledSquareProbabilityRange.value);
     doFillSquares = fillSquaresCheckbox.checked;
     fillColour = colourSelect.options[colourSelect.selectedIndex].value;
+
+    colourSelect.innerHTML += fillColours.reduce((acc, colour) => {
+      return `${acc}${renderColourOption(colour)}`;
+    }, '');
 
     generate();
     bindEvents();
@@ -89,7 +100,7 @@
         const x = (j ? cols[j - 1].x : 0);
         const width = (j === numCols ? canvas.height : cols[j].x) - x;
         const isWhite = !doFillSquares || (Math.random() > filledSquareProbability);
-        const colour = isWhite ? '#FFFFFF' : fillColours[getRandomRange(0, fillColours.length)];
+        const colour = isWhite ? '#FFFFFF' : fillColours[getRandomRange(0, fillColours.length - 1)].hex;
 
         rectangles.push({x, y, width, height, colour});
       }
@@ -130,6 +141,7 @@
    */
   function onFillSquaresCheckboxChange(event) {
     doFillSquares = event.currentTarget.checked;
+    filledSquareProbabilityRange.disabled = !doFillSquares;
   }
 
   /**
@@ -168,6 +180,15 @@
    */
   function setFilledSquareProbability(value) {
     filledSquareProbability = value / 100;
+  }
+
+  /**
+   * Returns a rendered option
+   * @param {Object} colour
+   * @return {String}
+   */
+  function renderColourOption(colour) {
+    return `<option value="${colour.hex}">${colour.name}</option>`;
   }
 
   /**

@@ -2,32 +2,37 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="app.css">
     <title>Mondriaan</title>
-    <style type="text/css">
-      .controls {
-        padding: 10px;
-      }
-    </style>
   </head>
   <body>
-    <canvas id="canvas" width="400" height="400"></canvas>
-    <div class="controls">
-      <input id="filledSquareProbabilityRange" type="range" min="0" max="100" value="15">
-      <label>filled squares probability</label>
-      <br><br>
-      <input id="fillSquares" type="checkbox" checked="checked"><label for="fillSquares">fill squares</label>
-      <br><br>
-      <select id="fillColour">
-        <option value="#FFFFFF">white</option>
-        <option value="#E4F7F7">light blue</option>
-        <option value="#BF0000">red</option>
-        <option value="#FFF700">yellow</option>
-        <option value="#0500EF">blue</option>
-        <option value="#000000">black</option>
-      </select>
-      <br><br>
-      <button id="regenerateButton">generate</button>
+    <div class="app">
+      <div class="frame">
+        <canvas id="canvas" class="canvas" width="400" height="400"></canvas>
+      </div>
+
+      <div class="controls">
+
+        <div>
+          <input id="fillSquares" type="checkbox" checked="checked">
+          <label for="fillSquares">Fill squares</label>
+          <input id="filledSquareProbabilityRange" type="range" min="0" max="100" value="15">
+        </div>
+
+        <hr class="hr">
+
+        <div>
+          <label>Fill colour</label>
+          <select id="fillColour" class="fillColour">
+            <option value="#FFFFFF">white</option>
+          </select>
+        </div>
+
+        <hr class="hr">
+
+        <button id="regenerateButton" class="button">(re)generate</button>
+      </div>
     </div>
-    <script type="text/javascript" src="app.js"></script>
+    <script src="app.js" defer></script>
   </body>
 </html>
