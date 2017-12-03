@@ -1,3 +1,5 @@
+import '../scss/__app.scss';
+
 (function(window, document) {
   'use strict';
 
