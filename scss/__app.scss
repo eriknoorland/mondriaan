@@ -1,0 +1,23 @@
+@import "button/__base";
+@import "controls/__base";
+@import "form/__base";
+
+* {
+  box-sizing: border-box;
+}
+
+.app {
+  width: 470px;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 12px;
+}
+
+.frame {
+  display: inline-block;
+  border: 15px solid #000;
+  padding: 20px;
+}
+
+.canvas {
+  max-width: 100%;
+}

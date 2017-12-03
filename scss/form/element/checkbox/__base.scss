@@ -1,0 +1,21 @@
+.form__element__checkboxInput {
+  display: none;
+}
+
+.form__element__checkboxLabel {
+  font-weight: bold;
+
+  &:before {
+    content: "";
+    display: inline-block;
+    margin: 0 10px 0 0;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #000;
+    transform: translateY(5px);
+
+    .form__element__checkboxInput:checked + & {
+      background: #000;
+    }
+  }
+}

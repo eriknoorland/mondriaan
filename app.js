@@ -1,10 +1,10 @@
 (function(window, document) {
   'use strict';
 
-  const regenerateButton = document.getElementById('regenerateButton');
-  const filledSquareProbabilityRange = document.getElementById('filledSquareProbabilityRange');
-  const fillSquaresCheckbox = document.getElementById('fillSquares');
-  const colourSelect = document.getElementById('fillColour');
+  const regenerateButton = document.querySelector('[data-js-generate]');
+  const filledSquareProbabilityRange = document.querySelector('[data-js-range]');
+  const fillSquaresCheckbox = document.querySelector('[data-js-checkbox]');
+  const colourSelect = document.querySelector('[data-js-select]');
   const canvas = document.getElementById('canvas');
   const context = canvas.getContext('2d');
 
@@ -194,9 +194,9 @@
    * @return {Number}
    */
   function getRandomRange(min, max) {
-    return Math.round((Math.random() * (max - min)) + min);
+    return Math.floor((Math.random() * ((max + 1) - min)) + min);
+    // return Math.round((Math.random() * (max - min)) + min);
   }
 
   init();
-
 }(window, document));

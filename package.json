@@ -4,7 +4,8 @@
   "description": "A JavaScript Mondriaan painting generator",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "css": "node-sass scss/__app.scss css/app.css",
+    "watch": "node-sass scss/__app.scss -wo / "
   },
   "author": "Erik Noorland",
   "license": "ISC"

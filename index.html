@@ -2,9 +2,10 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="app.css">
+    <link rel="stylesheet" type="text/css" href="css/app.css">
     <title>Mondriaan</title>
   </head>
+
   <body>
     <div class="app">
       <div class="frame">
@@ -13,26 +14,45 @@
 
       <div class="controls">
 
-        <div>
-          <input id="fillSquares" type="checkbox" checked="checked">
-          <label for="fillSquares">Fill squares</label>
-          <input id="filledSquareProbabilityRange" type="range" min="0" max="100" value="15">
+        <p class="controls__info">
+          With the slider you can determine the odds that will determine if an area will be filled with one of the available colours.
+        </p>
+
+        <div class="form__element form__element--inline">
+          <input id="fillSquares" type="checkbox" checked="checked" class="form__element__checkboxInput" data-js-checkbox>
+          <label for="fillSquares" class="form__element__checkboxLabel">Fill areas</label>
         </div>
 
-        <hr class="hr">
-
-        <div>
-          <label>Fill colour</label>
-          <select id="fillColour" class="fillColour">
-            <option value="#FFFFFF">white</option>
-          </select>
+        <div class="form__element form__element--inline">
+          <input type="range" min="0" max="100" value="15" data-js-range>
         </div>
 
-        <hr class="hr">
+        <hr class="controls__hr">
 
-        <button id="regenerateButton" class="button">(re)generate</button>
+        <p class="controls__info">
+          Choose a colour and click any area you would like to change to that colour.
+        </p>
+
+        <div class="form__element">
+          <div class="form__element__selectWrapper">
+            <select class="form__element__select" data-js-select>
+              <option value="#FFFFFF">white</option>
+            </select>
+          </div>
+        </div>
+
+        <hr class="controls__hr">
+
+        <p class="controls__info">
+          Generate a new canvas.
+        </p>
+
+        <div class="form__element">
+          <button class="button" data-js-generate>(re)generate</button>
+        </div>
       </div>
     </div>
+
     <script src="app.js" defer></script>
   </body>
 </html>
