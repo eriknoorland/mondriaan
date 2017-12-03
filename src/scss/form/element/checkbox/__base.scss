@@ -3,7 +3,11 @@
 }
 
 .form__element__checkboxLabel {
+  display: inline-block;
+  position: relative;
+  height: 27px;
   font-weight: bold;
+  cursor: pointer;
 
   &:before {
     content: "";
@@ -13,6 +17,16 @@
     height: 18px;
     border: 2px solid #000;
     transform: translateY(5px);
+  }
+
+  &:after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    top: 11px;
+    left: 6px;
+    transition: background .2s;
 
     .form__element__checkboxInput:checked + & {
       background: #000;

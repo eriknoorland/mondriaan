@@ -1,0 +1,13 @@
+.form__element__range {
+  -webkit-appearance: none;
+  width: 100%;
+  background: transparent;
+}
+
+.form__element__range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+}
+
+.form__element__range:focus {
+  outline: none;
+}

@@ -1,6 +1,7 @@
 import '../scss/__app.scss';
+import getRandomRange from './utils/getRandomRange';
 
-(function(window, document) {
+((window, document) => {
   'use strict';
 
   const regenerateButton = document.querySelector('[data-js-generate]');
@@ -91,7 +92,7 @@ import '../scss/__app.scss';
     strokes = rows.concat(cols);
 
     for(let i = 0; i < numRows + 1; i++) {
-      const y = (i ? rows[i - 1].y : 0);
+      const y = (i ? rows[i - 1].y :  0);
       const height = (i === numRows ? canvas.width : rows[i].y) - y;
 
       for(let j = 0; j < numCols + 1; j++) {
@@ -189,16 +190,5 @@ import '../scss/__app.scss';
     return `<option value="${option.value}">${option.name}</option>`;
   }
 
-  /**
-   * Returns a value between min and max
-   * @param {Number} min
-   * @param {Number} max
-   * @return {Number}
-   */
-  function getRandomRange(min, max) {
-    return Math.floor((Math.random() * ((max + 1) - min)) + min);
-    // return Math.round((Math.random() * (max - min)) + min);
-  }
-
   init();
-}(window, document));
+})(window, document);
